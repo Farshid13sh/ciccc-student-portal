@@ -14,7 +14,7 @@ export default async function InstructorStudentsPage() {
     <DashboardShell
       role="instructor"
       heading="Students"
-      subheading="Everyone enrolled across your courses"
+      subheading="Everyone enrolled across your programs"
       user={{ name: session.name, email: session.email }}
     >
       <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">

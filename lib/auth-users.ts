@@ -19,24 +19,24 @@ export interface AuthUser {
   department?: string; // instructor
 }
 
-// bcrypt hash of the shared demo password "brightpath123"
-const DEMO_HASH = "$2b$10$dFyRBTyXxyESlGykvJGHset1iSa.k4LEUH1b.lOKwwfczSUTdw83O";
+// bcrypt hash of the shared demo password "ciccc123"
+const DEMO_HASH = "$2b$10$o1ECNc8UzuigTyGfn0yYN.0FB3y1JtxOmh3azP4BLO9wCRX2dkUfm";
 
 export const authUsers: AuthUser[] = [
   {
-    id: "a1", name: "Maya Chen", email: "maya@brightpath.dev", role: "student",
-    passwordHash: DEMO_HASH, studentId: "S-100234", program: "Web Development Fundamentals",
+    id: "a1", name: "Maya Chen", email: "maya@ciccc-demo.ca", role: "student",
+    passwordHash: DEMO_HASH, studentId: "S-100234", program: "Cybersecurity Diploma",
   },
   {
-    id: "a2", name: "Leo Park", email: "leo@brightpath.dev", role: "student",
-    passwordHash: DEMO_HASH, studentId: "S-100255", program: "UX Design Essentials",
+    id: "a2", name: "Leo Park", email: "leo@ciccc-demo.ca", role: "student",
+    passwordHash: DEMO_HASH, studentId: "S-100255", program: "International Business Management Diploma",
   },
   {
-    id: "a3", name: "Dr. Sofia Reyes", email: "sofia@brightpath.dev", role: "instructor",
-    passwordHash: DEMO_HASH, employeeId: "E-500011", department: "Computer Science & Design",
+    id: "a3", name: "Dr. Amara Chen", email: "amara@ciccc-demo.ca", role: "instructor",
+    passwordHash: DEMO_HASH, employeeId: "E-500011", department: "Technology & AI",
   },
   {
-    id: "a4", name: "Admin Torres", email: "admin@brightpath.dev", role: "admin",
+    id: "a4", name: "Admin Torres", email: "admin@ciccc-demo.ca", role: "admin",
     passwordHash: DEMO_HASH,
   },
 ];

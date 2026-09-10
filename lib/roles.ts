@@ -9,12 +9,12 @@ export function isRole(value: string): value is Role {
 export const roleMeta: Record<Role, { label: string; blurb: string; allowSignup: boolean }> = {
   student: {
     label: "Student",
-    blurb: "Browse courses, track progress, view deadlines",
+    blurb: "Browse programs, track progress, view deadlines",
     allowSignup: true,
   },
   instructor: {
     label: "Instructor",
-    blurb: "Manage courses, students, attendance",
+    blurb: "Manage programs, students, attendance",
     allowSignup: true,
   },
   admin: {

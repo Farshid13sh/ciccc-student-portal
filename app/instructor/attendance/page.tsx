@@ -18,7 +18,7 @@ export default async function InstructorAttendancePage() {
     <DashboardShell
       role="instructor"
       heading="Attendance"
-      subheading="Recent session attendance across your courses"
+      subheading="Recent session attendance across your programs"
       user={{ name: session.name, email: session.email }}
     >
       <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">

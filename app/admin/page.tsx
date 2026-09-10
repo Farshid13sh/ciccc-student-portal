@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import DashboardShell from "@/components/DashboardShell";
 import StatCard from "@/components/StatCard";
 import { getSession } from "@/lib/auth";
-import { activity, payments } from "@/lib/data";
+import { activity, payments, programs } from "@/lib/data";
 
 export default async function AdminDashboard() {
   const session = await getSession();
@@ -22,8 +22,8 @@ export default async function AdminDashboard() {
     >
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         <StatCard label="Total users" value="1,248" hint="+32 this week" icon="👥" />
-        <StatCard label="Active courses" value="12" icon="📚" />
-        <StatCard label="Revenue (demo)" value={`$${revenue}`} hint="Sep 2026" icon="💰" />
+        <StatCard label="Active programs" value={String(programs.filter((p) => p.status === "published").length)} icon="📚" />
+        <StatCard label="Revenue (demo)" value={`$${revenue.toLocaleString()}`} hint="Sep 2026" icon="💰" />
         <StatCard label="Pending payments" value="1" icon="⏳" />
       </div>
 

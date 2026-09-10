@@ -10,7 +10,7 @@ const SESSION_TTL_SECONDS = 60 * 60 * 24; // 1 day
 // Demo-only fallback so `npm run dev` works with zero setup, per the README's
 // "no environment variables required" promise. Set SESSION_SECRET in a real
 // deployment — see .env.local.example.
-const secretValue = process.env.SESSION_SECRET || "brightpath-lms-demo-insecure-default-secret";
+const secretValue = process.env.SESSION_SECRET || "ciccc-demo-insecure-default-secret";
 const secretKey = new TextEncoder().encode(secretValue);
 
 export interface SessionPayload {

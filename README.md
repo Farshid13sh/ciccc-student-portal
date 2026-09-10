@@ -1,9 +1,12 @@
-# BrightPath LMS — Demo Project
+# CICCC Student Portal — Demo Project
 
-A frontend-heavy demo of an online school platform: role-scoped auth, student/instructor/admin
-dashboards, course pages, video uploads, project submissions, and a full relational database
-schema. Built to demonstrate the skills in the job posting: React/Next.js, Tailwind,
-component-based design, responsive UI, accessibility, authentication, and database modeling.
+A frontend-heavy demo of a real online school platform, modeled on **CICCC (Cornerstone
+International Community College of Canada)**, [ciccc.ca](https://ciccc.ca/en). Role-scoped auth,
+distinct student/instructor/admin portals, a program catalog with real tuition figures, a unit-
+based "My Learning" experience (video lessons + assignments), a tuition checkout flow, and a full
+relational database schema. Built to demonstrate the skills in the job posting: React/Next.js,
+Tailwind, component-based design, responsive UI, accessibility, authentication, APIs/LMS
+concepts, and database modeling.
 
 ## Quick start
 
@@ -17,6 +20,48 @@ Open http://localhost:3000 → **Sign in to the demo** → pick a role → sign 
 No external services or environment variables are required to run it. `SESSION_SECRET` is
 optional (see `.env.local.example`); without it, a fixed demo secret is used to sign session
 cookies, which is fine for local/demo use only.
+
+## Why CICCC
+
+The job posting is for an online school platform, so this demo is deliberately modeled on a real
+school rather than invented "Course A / Course B" placeholder content. **CICCC**
+(Cornerstone International Community College of Canada, Vancouver) is a real private college —
+[ciccc.ca/en](https://ciccc.ca/en) — and its actual program list and tuition-fees page shaped the
+data in `lib/data.ts`:
+
+- **Program catalog** (`/student/courses`) mirrors CICCC's real program structure: diplomas,
+  certificates, and language/test-prep programs grouped into 6 categories (Technology & AI,
+  Business, Hospitality, Language, Test Preparation, Education) — see [Data sources](#data-sources)
+  below for exactly which figures are real vs. illustrative.
+- There is **no "buy a course" checkout** like a generic course marketplace — a school doesn't
+  sell individual videos. Instead, enrolling opens a **tuition payment flow**
+  (`/student/account?tab=billing`) with a real fee structure: application fee, materials fee,
+  tuition (domestic/international), and — for longer diploma programs — a deposit due now with
+  the balance due before the program start date.
+
+## Information architecture
+
+The student portal follows a simple 4-item nav: **Dashboard · Course Catalog · My Learning ·
+Account.**
+
+- **Dashboard** (`/student`) — this week's schedule, upcoming deadlines, and a "continue
+  learning" shortcut into whichever program has the most recent progress.
+- **Course Catalog** (`/student/courses`) — all 8 programs, searchable and filterable by
+  category, each showing its badge, tuition, and an **Enroll Now** (unenrolled) or **Continue
+  Learning** (enrolled) call to action.
+- **My Learning** (`/student/learn`) — replaces the old separate "course detail" and
+  "submissions" pages. Each enrolled program opens a unit-grouped curriculum: video lessons play
+  in a dark inline player, assignment lessons open a file-upload + notes form, and both can be
+  marked complete. Progress is tracked per lesson and persisted to `localStorage`.
+- **Account** (`/student/account`) — three tabs: **Profile & Settings** (edit name/program),
+  **Tuition & Payments** (fee breakdown per enrolled program, full billing history, and the
+  checkout form for a program you're not yet enrolled in), and **Certificate** (a CICCC-branded
+  certificate for each completed program).
+
+Instructor and admin portals reuse the same collapsible-sidebar + top-bar shell and the same
+"Account" pattern, restyled to match, but keep their existing distinct pages (Programs, Uploads,
+Students, Attendance for instructors; Users, Payments, Reports for admins) — a school's staff
+tools don't need the same 4-item simplification as the student catalog.
 
 ## Auth flow
 
@@ -37,37 +82,58 @@ cookies, which is fine for local/demo use only.
 4. Sessions are signed httpOnly JWT cookies (`jose`, HS256, 1-day expiry). `middleware.ts`
    protects every `/student`, `/instructor`, and `/admin` route: no session → redirected to
    `/login`; wrong-role session → redirected to your own dashboard.
-5. **Log out** is in the sidebar of every dashboard.
+5. **Log out** is in the account menu (top-right avatar) of every dashboard.
 
-### Demo accounts (password: `brightpath123`)
+### Demo accounts (password: `ciccc123`)
 
 | Role | Email | Extra fields |
 |---|---|---|
-| Student | maya@brightpath.dev | Student ID `S-100234` |
-| Student | leo@brightpath.dev | Student ID `S-100255` |
-| Instructor | sofia@brightpath.dev | Employee ID `E-500011`, Computer Science & Design |
-| Admin | admin@brightpath.dev | — |
+| Student | maya@ciccc-demo.ca | Student ID `S-100234`, enrolled in Cybersecurity Diploma + AI Tools Certificate |
+| Student | leo@ciccc-demo.ca | Student ID `S-100255`, enrolled in International Business Management Diploma |
+| Instructor | amara@ciccc-demo.ca | Employee ID `E-500011`, Technology & AI faculty |
+| Admin | admin@ciccc-demo.ca | — |
+
+## Data sources
+
+The 8 programs in `lib/data.ts` (and mirrored in `database/seed.sql`) are based on CICCC's real
+program list and tuition-fees page. Tuition and fee figures fall into two groups — every program
+in the code is commented with which one it is:
+
+**Sourced from ciccc.ca/en/tuition-fees:** AI Tools & Technologies Certificate ($999), CELPIP
+Test Preparation ($1,500), TESL Certificate ($2,200), and the ESL Full Program tuition (based on
+that page's published weekly rate).
+
+**[ESTIMATED]** — a plausible figure at a comparable scale to similar Canadian private-college
+diploma programs, not a number scraped from the site (CICCC's public pages didn't expose a
+specific tuition total for these programs at research time): Cybersecurity Diploma, Business
+Intelligence & Analytics Basics Certificate, International Business Management Diploma, and
+Hospitality Management Co-op Diploma.
+
+Program names, categories, and durations are drawn from CICCC's real program catalog at
+[ciccc.ca/en/programs](https://ciccc.ca/en/programs). Everything else — the specific students,
+instructors, lesson content, schedule, and payment history — is invented demo data.
 
 ## What's included
 
 - **Role-gated auth**: role picker → role-scoped sign-in → bcrypt password checks → signed
   session cookies → middleware route protection, plus sign-up and a mocked Google OAuth entry
   point.
-- **Student portal** (`/student`): dashboard, course detail pages, and **Submissions**
-  (`/student/submissions`) — submit a project file + notes per course; list persists via
-  `localStorage`.
-- **Instructor portal** (`/instructor`): dashboard, and **Uploads** (`/instructor/uploads`) —
-  attach a video file to a lesson; list persists via `localStorage`.
-- **Admin portal** (`/admin`): platform KPIs, user table, payments table, activity feed.
+- **Student portal** (`/student`): dashboard, searchable/filterable program catalog, a unit-based
+  "My Learning" workspace (video + assignment lessons, progress tracking, file-upload
+  submissions), and an Account page with tuition checkout, billing history, and certificates.
+- **Instructor portal** (`/instructor`): dashboard, program management with curriculum + roster,
+  video uploads, students, attendance, and account settings.
+- **Admin portal** (`/admin`): platform KPIs, user table, payments table, reports (revenue by
+  program, enrollment by category), and account settings.
 - Each role has its own distinct route tree and sidebar — no shared pages between roles.
-- Responsive layout with collapsible sidebar, accessible markup (semantic HTML, aria labels,
-  focus states).
-- PostgreSQL schema + seed script in `/database`, including `lesson_videos` and
-  `project_submissions` tables mirroring the upload/submission features above.
+- Responsive layout with a collapsible sidebar, a persistent top bar (search + notifications +
+  account menu), and accessible markup (semantic HTML, aria labels, focus states).
+- PostgreSQL schema + seed script in `/database`, including `lesson_videos`,
+  `assignment_submissions`, and `certificates` tables mirroring the features above.
 
 ## Tech
 
-Next.js 14 (App Router) · TypeScript · Tailwind CSS · shadcn-style hand-rolled components ·
+Next.js 14 (App Router) · TypeScript · Tailwind CSS · hand-rolled components ·
 `bcryptjs` (password hashing) · `jose` (signed session cookies, Edge-compatible for middleware) ·
 PostgreSQL schema
 
@@ -77,15 +143,19 @@ PostgreSQL schema
   the dev/prod process restarts. A real deployment would write to the `users` table in
   `/database/schema.sql` instead.
 - "Continue with Google" is a styled mock, not real OAuth — no Google account is ever contacted.
+- The tuition checkout form is a styled mock — no real payment is processed and no card details
+  are stored anywhere.
 - Uploaded video/submission files are never actually stored — only the file name and size are
   kept (in `localStorage`), matching the "no backend required" scope of this demo. Swap in real
-  object storage (e.g. S3, Supabase Storage) and the `lesson_videos` / `project_submissions`
+  object storage (e.g. S3, Supabase Storage) and the `lesson_videos` / `assignment_submissions`
   tables to make this real.
+- Lesson completion and assignment submissions are tracked in `localStorage`, keyed per program —
+  they reset if you clear site data, and don't sync across devices.
 
 ## Possible next steps
 
 - Deploy to Vercel (free) and share the live link
 - Wire Supabase/Postgres to replace both the in-memory user store and `lib/data.ts`
-- Real file storage for uploads/submissions, backed by the new `lesson_videos` and
-  `project_submissions` tables
-- Add Stripe test-mode checkout for one course
+- Real file storage for uploads/submissions, backed by the `lesson_videos` and
+  `assignment_submissions` tables
+- Add Stripe test-mode checkout for tuition payments

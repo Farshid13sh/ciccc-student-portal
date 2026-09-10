@@ -28,7 +28,7 @@ export default function LoginForm({
           ← Choose a different portal
         </Link>
 
-        <h1 className="mt-3 text-center text-2xl font-bold text-brand-700">BrightPath</h1>
+        <h1 className="mt-3 text-center text-2xl font-bold text-brand-700">CICCC</h1>
         <p className="mt-1 text-center text-sm text-slate-500">Sign in — {meta.label} portal</p>
 
         {createdEmail && (
@@ -92,7 +92,7 @@ export default function LoginForm({
 
           <p className="text-center text-xs text-slate-400">
             Demo tip: this portal only accepts <strong>{demoPersona.email}</strong> · password{" "}
-            <strong>brightpath123</strong>
+            <strong>ciccc123</strong>
           </p>
         </div>
 

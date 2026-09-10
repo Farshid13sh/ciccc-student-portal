@@ -25,7 +25,7 @@ export default function SignupForm({ role }: { role: Role }) {
           ← Back to sign in
         </Link>
 
-        <h1 className="mt-3 text-center text-2xl font-bold text-brand-700">BrightPath</h1>
+        <h1 className="mt-3 text-center text-2xl font-bold text-brand-700">CICCC</h1>
         <p className="mt-1 text-center text-sm text-slate-500">Create a {meta.label.toLowerCase()} account</p>
 
         <form

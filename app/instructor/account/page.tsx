@@ -4,7 +4,7 @@ import ProfileForm from "@/components/ProfileForm";
 import { getSession } from "@/lib/auth";
 import { findAuthUserById } from "@/lib/auth-users";
 
-export default async function InstructorProfilePage() {
+export default async function InstructorAccountPage() {
   const session = await getSession();
   if (!session) redirect("/login");
   const user = findAuthUserById(session.sub);
@@ -12,8 +12,8 @@ export default async function InstructorProfilePage() {
   return (
     <DashboardShell
       role="instructor"
-      heading="Profile & account"
-      subheading="Manage your account details"
+      heading="Account"
+      subheading="Manage your profile and account details"
       user={{ name: session.name, email: session.email }}
     >
       <ProfileForm

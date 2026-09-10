@@ -5,7 +5,7 @@ export default function RoleSelect() {
   return (
     <main className="flex min-h-screen items-center justify-center bg-slate-100 px-4">
       <div className="w-full max-w-md">
-        <h1 className="text-center text-2xl font-bold text-brand-700">BrightPath</h1>
+        <h1 className="text-center text-2xl font-bold text-brand-700">CICCC</h1>
         <p className="mt-1 text-center text-sm text-slate-500">
           Who's signing in? Pick a portal to continue.
         </p>

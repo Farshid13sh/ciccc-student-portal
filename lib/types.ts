@@ -1,26 +1,39 @@
 export type Role = "student" | "instructor" | "admin";
 
-export interface Course {
+export type ProgramFormat = "Online" | "In-person" | "Hybrid";
+export type ProgramBadge = "Bestseller" | "New" | "Top Rated" | "Popular" | "Co-op";
+
+export interface Program {
   id: string;
   code: string;
   title: string;
   description: string;
   category: string;
-  price: number;          // dollars, for display
+  durationWeeks: number;
+  format: ProgramFormat;
   instructor: string;
   lessons: number;
-  duration: string;       // "12h 30m"
+  duration: string;       // display string, e.g. "48 weeks"
   rating: number;
   students: number;
   status: "published" | "draft" | "archived";
+  badge?: ProgramBadge;
+  // Fees modeled on ciccc.ca/en/tuition-fees (see README for what's sourced vs illustrative)
+  applicationFee: number;
+  materialsFee: number;
+  tuitionDomestic: number;
+  tuitionIntl: number;
+  depositDue?: number; // due at enrollment; remainder due before start
 }
 
 export interface Lesson {
   id: string;
-  courseId: string;
+  courseId: string; // Program id
+  unit: string;
   title: string;
   durationMin: number;
   order: number;
+  type: "video" | "assignment";
 }
 
 export interface Deadline {
@@ -36,6 +49,7 @@ export interface PaymentRow {
   amount: number;
   status: "paid" | "pending" | "refunded" | "failed";
   date: string;
+  kind: "application" | "materials" | "tuition" | "deposit";
 }
 
 export interface UserRow {
@@ -49,7 +63,7 @@ export interface UserRow {
 
 export interface ScheduleItem {
   id: string;
-  course: string;   // course code
+  course: string;   // program code
   title: string;
   day: string;      // "Mon", "Wed", ...
   start: string;    // "10:00 AM"
@@ -60,7 +74,7 @@ export interface ScheduleItem {
 
 export interface AttendanceRecord {
   id: string;
-  course: string;   // course code
+  course: string;   // program code
   student: string;
   date: string;
   status: "present" | "late" | "absent" | "excused";
@@ -73,4 +87,12 @@ export interface Notification {
   when: string;
   read: boolean;
   icon: string;
+}
+
+export interface Certificate {
+  id: string;
+  student: string;
+  courseId: string;
+  issuedDate: string;
+  verificationId: string;
 }

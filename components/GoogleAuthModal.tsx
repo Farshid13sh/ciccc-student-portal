@@ -56,7 +56,7 @@ export default function GoogleAuthModal({
                 <p id="google-modal-title" className="text-base font-medium text-slate-800">
                   Choose an account
                 </p>
-                <p className="mt-0.5 text-xs text-slate-500">to continue to BrightPath (demo)</p>
+                <p className="mt-0.5 text-xs text-slate-500">to continue to CICCC (demo)</p>
               </div>
               <button
                 type="button"

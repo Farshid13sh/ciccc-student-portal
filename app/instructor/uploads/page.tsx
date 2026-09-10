@@ -15,7 +15,7 @@ export default async function InstructorUploadsPage({
     <DashboardShell
       role="instructor"
       heading="Video uploads"
-      subheading="Add lesson videos to your courses"
+      subheading="Add lesson videos to your programs"
       user={{ name: session.name, email: session.email }}
     >
       <UploadManager initialCourseCode={searchParams.course} />

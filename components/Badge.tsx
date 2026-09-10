@@ -10,6 +10,11 @@ const tones: Record<string, string> = {
   present: "bg-emerald-100 text-emerald-800",
   late: "bg-amber-100 text-amber-800",
   absent: "bg-rose-100 text-rose-800",
+  Bestseller: "bg-brand-100 text-brand-700",
+  New: "bg-emerald-100 text-emerald-800",
+  "Top Rated": "bg-amber-100 text-amber-800",
+  Popular: "bg-brand-100 text-brand-700",
+  "Co-op": "bg-purple-100 text-purple-700",
 };
 
 export default function Badge({ label }: { label: string }) {

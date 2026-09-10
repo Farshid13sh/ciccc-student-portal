@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, type FormEvent } from "react";
-import { courses } from "@/lib/data";
+import { programs } from "@/lib/data";
 
 interface VideoUpload {
   id: string;
@@ -22,7 +22,7 @@ function formatSize(bytes: number): string {
 export default function UploadManager({ initialCourseCode }: { initialCourseCode?: string } = {}) {
   const [uploads, setUploads] = useState<VideoUpload[]>([]);
   const [title, setTitle] = useState("");
-  const [courseCode, setCourseCode] = useState(initialCourseCode ?? courses[0]?.code ?? "");
+  const [courseCode, setCourseCode] = useState(initialCourseCode ?? programs[0]?.code ?? "");
   const [fileName, setFileName] = useState<string>("");
   const [fileSize, setFileSize] = useState<number>(0);
   const [loaded, setLoaded] = useState(false);
@@ -81,7 +81,7 @@ export default function UploadManager({ initialCourseCode }: { initialCourseCode
         <form onSubmit={handleSubmit} className="mt-4 space-y-3">
           <div>
             <label htmlFor="course" className="block text-xs font-medium text-slate-600">
-              Course
+              Program
             </label>
             <select
               id="course"
@@ -89,9 +89,9 @@ export default function UploadManager({ initialCourseCode }: { initialCourseCode
               onChange={(e) => setCourseCode(e.target.value)}
               className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
             >
-              {courses.map((c) => (
-                <option key={c.id} value={c.code}>
-                  {c.code} · {c.title}
+              {programs.map((p) => (
+                <option key={p.id} value={p.code}>
+                  {p.code} · {p.title}
                 </option>
               ))}
             </select>

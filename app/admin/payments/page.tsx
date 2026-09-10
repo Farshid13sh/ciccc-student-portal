@@ -16,13 +16,13 @@ export default async function AdminPaymentsPage() {
     <DashboardShell
       role="admin"
       heading="Payments"
-      subheading="All course payments across the platform"
+      subheading="All tuition payments across the platform"
       user={{ name: session.name, email: session.email }}
     >
       <div className="grid grid-cols-3 gap-4">
         <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
           <p className="text-xs text-slate-500">Total collected</p>
-          <p className="mt-1 text-2xl font-bold text-brand-600">${total}</p>
+          <p className="mt-1 text-2xl font-bold text-brand-600">${total.toLocaleString()}</p>
         </div>
         <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
           <p className="text-xs text-slate-500">Pending</p>
@@ -39,7 +39,7 @@ export default async function AdminPaymentsPage() {
           <thead className="border-b border-slate-200 bg-slate-50 text-xs uppercase text-slate-500">
             <tr>
               <th scope="col" className="px-5 py-3 font-medium">Student</th>
-              <th scope="col" className="px-5 py-3 font-medium">Course</th>
+              <th scope="col" className="px-5 py-3 font-medium">Program</th>
               <th scope="col" className="px-5 py-3 font-medium">Amount</th>
               <th scope="col" className="px-5 py-3 font-medium">Date</th>
               <th scope="col" className="px-5 py-3 font-medium">Status</th>
@@ -50,7 +50,7 @@ export default async function AdminPaymentsPage() {
               <tr key={p.id} className="hover:bg-slate-50">
                 <td className="px-5 py-3 font-medium">{p.student}</td>
                 <td className="px-5 py-3 text-slate-600">{p.course}</td>
-                <td className="px-5 py-3">${p.amount}</td>
+                <td className="px-5 py-3">${p.amount.toLocaleString()}</td>
                 <td className="px-5 py-3 text-slate-600">{p.date}</td>
                 <td className="px-5 py-3"><Badge label={p.status} /></td>
               </tr>

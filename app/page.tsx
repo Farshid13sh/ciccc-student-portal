@@ -4,14 +4,14 @@ export default function Home() {
   return (
     <main className="mx-auto flex min-h-screen max-w-4xl flex-col items-center justify-center px-6 text-center">
       <p className="text-sm font-semibold uppercase tracking-widest text-brand-600">
-        BrightPath LMS
+        CICCC Student Portal
       </p>
       <h1 className="mt-3 text-4xl font-extrabold tracking-tight sm:text-5xl">
-        One platform for courses, attendance &amp; payments
+        One platform for programs, attendance &amp; tuition
       </h1>
       <p className="mt-4 max-w-xl text-slate-600">
         A modern online school platform for students, instructors, and staff —
-        course registration, learning materials, certificates, and more.
+        program enrollment, learning materials, certificates, and more.
       </p>
       <Link
         href="/login"

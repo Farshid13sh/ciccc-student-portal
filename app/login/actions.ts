@@ -28,7 +28,7 @@ export async function login(_prevState: LoginState | undefined, formData: FormDa
     return {
       error:
         `That email/password doesn't match a ${role} account. ` +
-        `Try the seeded demo account for this portal: ${persona.email} (password: brightpath123), ` +
+        `Try the seeded demo account for this portal: ${persona.email} (password: ciccc123), ` +
         `or sign in with an account you created via Sign up.`,
     };
   }

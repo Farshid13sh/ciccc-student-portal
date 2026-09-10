@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "BrightPath LMS",
+  title: "CICCC Student Portal",
   description: "Online school platform demo",
 };
 
