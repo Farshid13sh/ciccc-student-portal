@@ -1,9 +1,11 @@
 -- Seed data for BrightPath LMS
-INSERT INTO users (id, full_name, email, role) VALUES
-  ('a1', 'Maya Chen',   'maya@brightpath.dev', 'student'),
-  ('a2', 'Leo Park',    'leo@brightpath.dev',  'student'),
-  ('a3', 'Dr. Sofia Reyes', 'sofia@brightpath.dev', 'instructor'),
-  ('a4', 'Admin Torres', 'admin@brightpath.dev', 'admin');
+-- password_hash below is the bcrypt hash of the shared demo password
+-- "brightpath123" (see lib/auth-users.ts) — fine to publish since it's a demo.
+INSERT INTO users (id, full_name, email, password_hash, role, student_id, program, employee_id, department) VALUES
+  ('a1', 'Maya Chen',   'maya@brightpath.dev', '$2b$10$dFyRBTyXxyESlGykvJGHset1iSa.k4LEUH1b.lOKwwfczSUTdw83O', 'student', 'S-100234', 'Web Development Fundamentals', NULL, NULL),
+  ('a2', 'Leo Park',    'leo@brightpath.dev',  '$2b$10$dFyRBTyXxyESlGykvJGHset1iSa.k4LEUH1b.lOKwwfczSUTdw83O', 'student', 'S-100255', 'UX Design Essentials', NULL, NULL),
+  ('a3', 'Dr. Sofia Reyes', 'sofia@brightpath.dev', '$2b$10$dFyRBTyXxyESlGykvJGHset1iSa.k4LEUH1b.lOKwwfczSUTdw83O', 'instructor', NULL, NULL, 'E-500011', 'Computer Science & Design'),
+  ('a4', 'Admin Torres', 'admin@brightpath.dev', '$2b$10$dFyRBTyXxyESlGykvJGHset1iSa.k4LEUH1b.lOKwwfczSUTdw83O', 'admin', NULL, NULL, NULL, NULL);
 
 INSERT INTO courses (id, code, title, description, category, price_cents, instructor_id, status) VALUES
   ('c1', 'WD-101', 'Web Development Fundamentals', 'HTML, CSS and JavaScript from zero to deployed.', 'Development', 14900, 'a3', 'published'),

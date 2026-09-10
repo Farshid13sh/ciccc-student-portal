@@ -1,7 +1,7 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import DashboardShell from "@/components/DashboardShell";
 import StatCard from "@/components/StatCard";
-import Badge from "@/components/Badge";
 import { getSession } from "@/lib/auth";
 import { activity, courses } from "@/lib/data";
 
@@ -25,33 +25,16 @@ export default async function InstructorDashboard() {
         <StatCard label="Submissions to grade" value="7" icon="📝" />
       </div>
 
-      <h2 className="mt-8 text-lg font-semibold">My courses</h2>
-      <div className="mt-3 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
-        <table className="w-full text-left text-sm">
-          <thead className="border-b border-slate-200 bg-slate-50 text-xs uppercase text-slate-500">
-            <tr>
-              <th scope="col" className="px-5 py-3 font-medium">Course</th>
-              <th scope="col" className="px-5 py-3 font-medium">Category</th>
-              <th scope="col" className="px-5 py-3 font-medium">Students</th>
-              <th scope="col" className="px-5 py-3 font-medium">Rating</th>
-              <th scope="col" className="px-5 py-3 font-medium">Status</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-slate-100">
-            {courses.map((c) => (
-              <tr key={c.id} className="hover:bg-slate-50">
-                <td className="px-5 py-3">
-                  <span className="mr-2 text-xs font-semibold text-brand-600">{c.code}</span>
-                  {c.title}
-                </td>
-                <td className="px-5 py-3 text-slate-600">{c.category}</td>
-                <td className="px-5 py-3">{c.students}</td>
-                <td className="px-5 py-3">★ {c.rating}</td>
-                <td className="px-5 py-3"><Badge label={c.status} /></td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <div className="mt-6 flex flex-wrap gap-3">
+        <Link href="/instructor/courses" className="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm hover:border-brand-500 hover:text-brand-700">
+          Manage courses →
+        </Link>
+        <Link href="/instructor/uploads" className="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm hover:border-brand-500 hover:text-brand-700">
+          Upload a video →
+        </Link>
+        <Link href="/instructor/attendance" className="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm hover:border-brand-500 hover:text-brand-700">
+          Take attendance →
+        </Link>
       </div>
 
       <h2 className="mt-8 text-lg font-semibold">Recent activity</h2>

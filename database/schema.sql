@@ -7,9 +7,18 @@ CREATE TABLE users (
   id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   full_name     TEXT NOT NULL,
   email         TEXT UNIQUE NOT NULL,
+  password_hash TEXT NOT NULL,               -- bcrypt; never selected into API responses
   role          user_role NOT NULL DEFAULT 'student',
   avatar_url    TEXT,
-  created_at    TIMESTAMPTZ NOT NULL DEFAULT now()
+  student_id    TEXT UNIQUE,                 -- required when role = 'student'
+  employee_id   TEXT UNIQUE,                 -- required when role = 'instructor'
+  department    TEXT,                        -- instructor only
+  program       TEXT,                        -- student only
+  created_at    TIMESTAMPTZ NOT NULL DEFAULT now(),
+  CONSTRAINT student_has_student_id
+    CHECK (role <> 'student' OR student_id IS NOT NULL),
+  CONSTRAINT instructor_has_employee_id
+    CHECK (role <> 'instructor' OR employee_id IS NOT NULL)
 );
 
 CREATE TABLE courses (
@@ -58,6 +67,28 @@ CREATE TABLE attendance (
   UNIQUE (course_id, student_id, session_date)
 );
 
+CREATE TABLE lesson_videos (
+  id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  lesson_id     UUID REFERENCES lessons(id) ON DELETE SET NULL,
+  course_id     UUID NOT NULL REFERENCES courses(id) ON DELETE CASCADE,
+  uploaded_by   UUID NOT NULL REFERENCES users(id),  -- must be role = 'instructor'
+  title         TEXT NOT NULL,
+  storage_url   TEXT NOT NULL,   -- object storage URL in a real deployment
+  duration_sec  INTEGER,
+  uploaded_at   TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE TABLE project_submissions (
+  id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  course_id     UUID NOT NULL REFERENCES courses(id),
+  student_id    UUID NOT NULL REFERENCES users(id),  -- must be role = 'student'
+  title         TEXT NOT NULL,
+  file_url      TEXT NOT NULL,   -- object storage URL in a real deployment
+  notes         TEXT,
+  status        TEXT NOT NULL DEFAULT 'submitted' CHECK (status IN ('submitted', 'graded', 'returned')),
+  submitted_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
 CREATE TABLE payments (
   id           UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   student_id   UUID NOT NULL REFERENCES users(id),
@@ -71,3 +102,5 @@ CREATE TABLE payments (
 CREATE INDEX idx_enrollments_student ON enrollments(student_id);
 CREATE INDEX idx_lessons_course ON lessons(course_id, sort_order);
 CREATE INDEX idx_payments_status ON payments(status);
+CREATE INDEX idx_lesson_videos_course ON lesson_videos(course_id);
+CREATE INDEX idx_submissions_course_student ON project_submissions(course_id, student_id);

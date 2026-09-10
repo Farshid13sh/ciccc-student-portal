@@ -1,5 +1,8 @@
 import Sidebar from "./Sidebar";
+import NotificationBell from "./NotificationBell";
+import ProfileMenu from "./ProfileMenu";
 import type { Role } from "@/lib/types";
+import { notificationsForRole } from "@/lib/notifications";
 
 export default function DashboardShell({
   role, heading, subheading, user, children,
@@ -19,12 +22,10 @@ export default function DashboardShell({
             <h1 className="text-2xl font-bold tracking-tight">{heading}</h1>
             <p className="mt-1 text-sm text-slate-500">{subheading}</p>
           </div>
-          {user && (
-            <div className="text-right text-sm">
-              <p className="font-medium text-slate-700">{user.name}</p>
-              <p className="text-xs text-slate-500">{user.email}</p>
-            </div>
-          )}
+          <div className="flex items-center gap-3">
+            <NotificationBell initial={notificationsForRole(role)} />
+            {user && <ProfileMenu role={role} name={user.name} email={user.email} />}
+          </div>
         </header>
         {children}
       </main>

@@ -1,9 +1,9 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import DashboardShell from "@/components/DashboardShell";
 import StatCard from "@/components/StatCard";
-import Badge from "@/components/Badge";
 import { getSession } from "@/lib/auth";
-import { payments, users } from "@/lib/data";
+import { activity, payments } from "@/lib/data";
 
 export default async function AdminDashboard() {
   const session = await getSession();
@@ -27,58 +27,28 @@ export default async function AdminDashboard() {
         <StatCard label="Pending payments" value="1" icon="⏳" />
       </div>
 
-      <h2 className="mt-8 text-lg font-semibold">Users</h2>
-      <div className="mt-3 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
-        <table className="w-full text-left text-sm">
-          <thead className="border-b border-slate-200 bg-slate-50 text-xs uppercase text-slate-500">
-            <tr>
-              <th scope="col" className="px-5 py-3 font-medium">Name</th>
-              <th scope="col" className="px-5 py-3 font-medium">Role</th>
-              <th scope="col" className="px-5 py-3 font-medium">Joined</th>
-              <th scope="col" className="px-5 py-3 font-medium">Status</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-slate-100">
-            {users.map((u) => (
-              <tr key={u.id} className="hover:bg-slate-50">
-                <td className="px-5 py-3">
-                  <p className="font-medium">{u.name}</p>
-                  <p className="text-xs text-slate-500">{u.email}</p>
-                </td>
-                <td className="px-5 py-3 capitalize text-slate-600">{u.role}</td>
-                <td className="px-5 py-3 text-slate-600">{u.joined}</td>
-                <td className="px-5 py-3"><Badge label={u.status} /></td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <div className="mt-6 flex flex-wrap gap-3">
+        <Link href="/admin/users" className="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm hover:border-brand-500 hover:text-brand-700">
+          Manage users →
+        </Link>
+        <Link href="/admin/payments" className="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm hover:border-brand-500 hover:text-brand-700">
+          View payments →
+        </Link>
+        <Link href="/admin/reports" className="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm hover:border-brand-500 hover:text-brand-700">
+          Open reports →
+        </Link>
       </div>
 
-      <h2 className="mt-8 text-lg font-semibold">Payments</h2>
-      <div className="mt-3 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
-        <table className="w-full text-left text-sm">
-          <thead className="border-b border-slate-200 bg-slate-50 text-xs uppercase text-slate-500">
-            <tr>
-              <th scope="col" className="px-5 py-3 font-medium">Student</th>
-              <th scope="col" className="px-5 py-3 font-medium">Course</th>
-              <th scope="col" className="px-5 py-3 font-medium">Amount</th>
-              <th scope="col" className="px-5 py-3 font-medium">Date</th>
-              <th scope="col" className="px-5 py-3 font-medium">Status</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-slate-100">
-            {payments.map((p) => (
-              <tr key={p.id} className="hover:bg-slate-50">
-                <td className="px-5 py-3 font-medium">{p.student}</td>
-                <td className="px-5 py-3 text-slate-600">{p.course}</td>
-                <td className="px-5 py-3">${p.amount}</td>
-                <td className="px-5 py-3 text-slate-600">{p.date}</td>
-                <td className="px-5 py-3"><Badge label={p.status} /></td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <h2 className="mt-8 text-lg font-semibold">Recent activity</h2>
+      <ul className="mt-3 divide-y divide-slate-200 rounded-xl border border-slate-200 bg-white shadow-sm">
+        {activity.map((a) => (
+          <li key={a.what} className="px-5 py-3 text-sm">
+            <span className="font-medium">{a.who}</span>{" "}
+            <span className="text-slate-600">{a.what}</span>
+            <span className="float-right text-xs text-slate-400">{a.when}</span>
+          </li>
+        ))}
+      </ul>
     </DashboardShell>
   );
 }

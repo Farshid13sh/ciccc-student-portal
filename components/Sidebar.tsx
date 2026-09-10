@@ -1,24 +1,24 @@
 import Link from "next/link";
 import type { Role } from "@/lib/types";
-import { logout } from "@/app/login/actions";
 
 const nav: Record<Role, { href: string; label: string; icon: string }[]> = {
   student: [
     { href: "/student", label: "Dashboard", icon: "🏠" },
-    { href: "/student/courses/c1", label: "My Courses", icon: "📚" },
-    { href: "/login", label: "Payments", icon: "💳" },
+    { href: "/student/courses", label: "My Courses", icon: "📚" },
+    { href: "/student/submissions", label: "Submissions", icon: "📤" },
   ],
   instructor: [
     { href: "/instructor", label: "Dashboard", icon: "🏠" },
-    { href: "/instructor", label: "My Courses", icon: "📚" },
-    { href: "/instructor", label: "Students", icon: "🎓" },
-    { href: "/instructor", label: "Attendance", icon: "✅" },
+    { href: "/instructor/courses", label: "My Courses", icon: "📚" },
+    { href: "/instructor/uploads", label: "Uploads", icon: "🎥" },
+    { href: "/instructor/students", label: "Students", icon: "🎓" },
+    { href: "/instructor/attendance", label: "Attendance", icon: "✅" },
   ],
   admin: [
     { href: "/admin", label: "Dashboard", icon: "🏠" },
-    { href: "/admin", label: "Users", icon: "👥" },
-    { href: "/admin", label: "Payments", icon: "💳" },
-    { href: "/admin", label: "Reports", icon: "📈" },
+    { href: "/admin/users", label: "Users", icon: "👥" },
+    { href: "/admin/payments", label: "Payments", icon: "💳" },
+    { href: "/admin/reports", label: "Reports", icon: "📈" },
   ],
 };
 
@@ -42,14 +42,9 @@ export default function Sidebar({ role, title }: { role: Role; title: string }) 
           </Link>
         ))}
       </nav>
-      <form action={logout} className="m-3">
-        <button
-          type="submit"
-          className="w-full rounded-lg px-3 py-2 text-center text-sm font-medium text-slate-500 hover:bg-slate-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
-        >
-          <span aria-hidden>↩️</span> <span className="hidden md:inline">Log out</span>
-        </button>
-      </form>
+      <div className="hidden px-5 py-4 text-xs text-slate-400 md:block">
+        Signed in via profile menu (top right) →
+      </div>
     </aside>
   );
 }

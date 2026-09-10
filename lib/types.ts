@@ -46,3 +46,31 @@ export interface UserRow {
   joined: string;
   status: "active" | "invited";
 }
+
+export interface ScheduleItem {
+  id: string;
+  course: string;   // course code
+  title: string;
+  day: string;      // "Mon", "Wed", ...
+  start: string;    // "10:00 AM"
+  end: string;      // "11:30 AM"
+  format: "Live" | "Self-paced";
+  location: string; // "Zoom" | "Studio 2" | ...
+}
+
+export interface AttendanceRecord {
+  id: string;
+  course: string;   // course code
+  student: string;
+  date: string;
+  status: "present" | "late" | "absent" | "excused";
+}
+
+export interface Notification {
+  id: string;
+  title: string;
+  body: string;
+  when: string;
+  read: boolean;
+  icon: string;
+}

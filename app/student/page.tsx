@@ -1,9 +1,9 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import DashboardShell from "@/components/DashboardShell";
-import CourseCard from "@/components/CourseCard";
 import StatCard from "@/components/StatCard";
 import { getSession } from "@/lib/auth";
-import { courses, deadlines, enrollments } from "@/lib/data";
+import { courses, deadlines, enrollments, schedule } from "@/lib/data";
 
 export default async function StudentDashboard() {
   const session = await getSession();
@@ -39,30 +39,63 @@ export default async function StudentDashboard() {
           <p className="text-sm text-slate-600">
             You're {continueCourse.progress}% through — next up: Fetch &amp; APIs
           </p>
+          <Link
+            href={`/student/courses/${continueCourse.course.id}`}
+            className="mt-3 inline-block text-sm font-semibold text-brand-700 hover:underline"
+          >
+            Resume course →
+          </Link>
         </section>
       )}
 
-      <h2 className="mt-8 text-lg font-semibold">My courses</h2>
-      <div className="mt-3 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-        {myEnrollments.map(({ course, progress }) => (
-          <CourseCard key={course.id} course={course} progress={progress} />
-        ))}
-      </div>
+      <div className="mt-8 grid gap-6 lg:grid-cols-2">
+        <section aria-labelledby="schedule-heading" className="rounded-xl border border-slate-200 bg-white shadow-sm">
+          <h2 id="schedule-heading" className="border-b border-slate-200 px-5 py-3 text-lg font-semibold">
+            This week's schedule
+          </h2>
+          <ul className="divide-y divide-slate-100">
+            {schedule.map((s) => (
+              <li key={s.id} className="flex items-center justify-between gap-3 px-5 py-3 text-sm">
+                <div>
+                  <span className="mr-2 rounded bg-slate-100 px-2 py-0.5 text-xs font-semibold text-slate-600">
+                    {s.course}
+                  </span>
+                  {s.title}
+                  <p className="mt-0.5 text-xs text-slate-500">
+                    {s.format === "Live" ? `${s.day} · ${s.start}–${s.end} · ${s.location}` : `${s.day} · Self-paced`}
+                  </p>
+                </div>
+                <span
+                  className={`shrink-0 rounded px-2 py-0.5 text-xs font-semibold ${
+                    s.format === "Live" ? "bg-emerald-100 text-emerald-700" : "bg-slate-100 text-slate-600"
+                  }`}
+                >
+                  {s.format}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </section>
 
-      <h2 className="mt-8 text-lg font-semibold">Upcoming deadlines</h2>
-      <ul className="mt-3 divide-y divide-slate-200 rounded-xl border border-slate-200 bg-white shadow-sm">
-        {deadlines.map((d) => (
-          <li key={d.label} className="flex items-center justify-between px-5 py-3 text-sm">
-            <div>
-              <span className="mr-2 rounded bg-slate-100 px-2 py-0.5 text-xs font-semibold text-slate-600">
-                {d.course}
-              </span>
-              {d.label}
-            </div>
-            <span className="text-slate-500">Due {d.due}</span>
-          </li>
-        ))}
-      </ul>
+        <section aria-labelledby="deadlines-heading" className="rounded-xl border border-slate-200 bg-white shadow-sm">
+          <h2 id="deadlines-heading" className="border-b border-slate-200 px-5 py-3 text-lg font-semibold">
+            Upcoming deadlines
+          </h2>
+          <ul className="divide-y divide-slate-100">
+            {deadlines.map((d) => (
+              <li key={d.label} className="flex items-center justify-between px-5 py-3 text-sm">
+                <div>
+                  <span className="mr-2 rounded bg-slate-100 px-2 py-0.5 text-xs font-semibold text-slate-600">
+                    {d.course}
+                  </span>
+                  {d.label}
+                </div>
+                <span className="text-slate-500">Due {d.due}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      </div>
     </DashboardShell>
   );
 }

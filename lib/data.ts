@@ -1,4 +1,4 @@
-import type { Course, Deadline, Lesson, PaymentRow, UserRow } from "./types";
+import type { AttendanceRecord, Course, Deadline, Lesson, PaymentRow, ScheduleItem, UserRow } from "./types";
 
 export const courses: Course[] = [
   { id: "c1", code: "WD-101", title: "Web Development Fundamentals",
@@ -31,6 +31,15 @@ export const lessons: Lesson[] = [
   { id: "l4", courseId: "c1", title: "JavaScript basics", durationMin: 60, order: 4 },
   { id: "l5", courseId: "c1", title: "Fetch & APIs", durationMin: 45, order: 5 },
   { id: "l6", courseId: "c1", title: "Capstone: build a portfolio site", durationMin: 90, order: 6 },
+
+  { id: "l7", courseId: "c2", title: "Big-O and why it matters", durationMin: 35, order: 1 },
+  { id: "l8", courseId: "c2", title: "Arrays & linked lists", durationMin: 60, order: 2 },
+  { id: "l9", courseId: "c2", title: "Stacks & queues", durationMin: 50, order: 3 },
+  { id: "l10", courseId: "c2", title: "Hash maps", durationMin: 55, order: 4 },
+  { id: "l11", courseId: "c2", title: "Trees & binary search trees", durationMin: 70, order: 5 },
+  { id: "l12", courseId: "c2", title: "Graphs: BFS & DFS", durationMin: 65, order: 6 },
+  { id: "l13", courseId: "c2", title: "Sorting algorithms", durationMin: 60, order: 7 },
+  { id: "l14", courseId: "c2", title: "Capstone: pathfinding visualizer", durationMin: 105, order: 8 },
 ];
 
 export const deadlines: Deadline[] = [
@@ -53,6 +62,26 @@ export const users: UserRow[] = [
   { id: "a3", name: "Dr. Sofia Reyes", email: "sofia@brightpath.dev", role: "instructor", joined: "Jun 2, 2026", status: "active" },
   { id: "a4", name: "Admin Torres", email: "admin@brightpath.dev", role: "admin", joined: "Jun 1, 2026", status: "active" },
   { id: "a5", name: "Nora Ali", email: "nora@brightpath.dev", role: "student", joined: "Sep 5, 2026", status: "invited" },
+];
+
+export const schedule: ScheduleItem[] = [
+  { id: "sc1", course: "WD-101", title: "Live Q&A: Flexbox & Grid", day: "Mon", start: "10:00 AM", end: "11:00 AM", format: "Live", location: "Zoom" },
+  { id: "sc2", course: "DS-201", title: "Office hours", day: "Tue", start: "1:00 PM", end: "2:00 PM", format: "Live", location: "Zoom" },
+  { id: "sc3", course: "WD-101", title: "Lesson: JavaScript basics", day: "Wed", start: "Anytime", end: "", format: "Self-paced", location: "Online" },
+  { id: "sc4", course: "DS-201", title: "Study group: Linked lists", day: "Thu", start: "4:00 PM", end: "5:00 PM", format: "Live", location: "Zoom" },
+  { id: "sc5", course: "WD-101", title: "Capstone check-in", day: "Fri", start: "11:00 AM", end: "11:30 AM", format: "Live", location: "Zoom" },
+];
+
+export const attendance: AttendanceRecord[] = [
+  { id: "at1", course: "WD-101", student: "Maya Chen", date: "Sep 1, 2026", status: "present" },
+  { id: "at2", course: "WD-101", student: "Maya Chen", date: "Sep 3, 2026", status: "present" },
+  { id: "at3", course: "WD-101", student: "Maya Chen", date: "Sep 5, 2026", status: "late" },
+  { id: "at4", course: "WD-101", student: "Leo Park", date: "Sep 1, 2026", status: "present" },
+  { id: "at5", course: "WD-101", student: "Leo Park", date: "Sep 3, 2026", status: "absent" },
+  { id: "at6", course: "WD-101", student: "Leo Park", date: "Sep 5, 2026", status: "present" },
+  { id: "at7", course: "DS-201", student: "Maya Chen", date: "Sep 2, 2026", status: "present" },
+  { id: "at8", course: "DS-201", student: "Maya Chen", date: "Sep 4, 2026", status: "excused" },
+  { id: "at9", course: "DS-201", student: "Nora Ali", date: "Sep 2, 2026", status: "present" },
 ];
 
 export const activity = [
