@@ -19,6 +19,9 @@ export default function Home() {
       >
         Sign in to the demo →
       </Link>
+      <Link href="/certificates/verify" className="mt-4 text-sm font-medium text-slate-500 hover:text-brand-600">
+        Verify a graduate's certificate →
+      </Link>
     </main>
   );
 }

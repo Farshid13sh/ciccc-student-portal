@@ -130,6 +130,35 @@ instructors, lesson content, schedule, and payment history — is invented demo 
   account menu), and accessible markup (semantic HTML, aria labels, focus states).
 - PostgreSQL schema + seed script in `/database`, including `lesson_videos`,
   `assignment_submissions`, and `certificates` tables mirroring the features above.
+- A real REST API layer (`/app/api/*`) — see below.
+- A public certificate verification page (`/certificates/verify`) that calls that API with no
+  login required.
+
+## API layer
+
+Most pages render server-side by importing straight from `lib/data.ts` — the idiomatic Next.js
+App Router pattern, and the fastest path for a page that just needs to render once. But the app
+also exposes a handful of genuine REST endpoints under `/app/api`, used by client components that
+need to fetch fresh data after the page has already loaded (search-as-you-type, a public lookup
+page) rather than everything being baked in at render time:
+
+| Route | Auth | Used by |
+|---|---|---|
+| `GET /api/programs?q=&category=` | Public | `components/CourseCatalog.tsx` — the catalog's search box and category pills debounce, then fetch this over the network (open devtools → Network tab while typing to see it) instead of filtering an array that was already sent to the client. |
+| `GET /api/programs/[id]` | Public | Returns one program plus its curriculum. Not wired into the UI yet — the server-rendered pages already have this via `lib/data.ts` — but available for a future mobile client or partner integration. |
+| `GET /api/enrollments` | Session cookie, student role only | Returns the signed-in student's enrolled programs + progress. 401 without a session, 403 for non-student roles. |
+| `GET /api/notifications` | Session cookie, any role | Returns that role's notifications. |
+| `GET /api/certificates/verify/[verificationId]` | Public, no session | Looks up a certificate by its verification ID. Powers `/certificates/verify`, a page anyone (an employer, another school) can use without an account — a real feature most schools' platforms have. |
+
+Try it with curl once the dev server is running:
+
+```bash
+curl "http://localhost:3000/api/programs?category=Technology%20%26%20AI"
+curl "http://localhost:3000/api/certificates/verify/CICCC-CP120-88213"
+```
+
+The auth-gated routes read the same signed session cookie as every Server Component in the app
+(`lib/auth.ts`'s `getSession()`), so there's one auth system, not two.
 
 ## Tech
 

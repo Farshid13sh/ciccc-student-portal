@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import DashboardShell from "@/components/DashboardShell";
 import ProfileForm from "@/components/ProfileForm";
@@ -130,14 +131,22 @@ export default async function StudentAccountPage({
                   <p className="mt-1 text-lg font-semibold text-brand-800">{program?.title ?? cert.courseId}</p>
                   <p className="mt-4 text-xs text-slate-500">Issued {cert.issuedDate}</p>
                   <p className="mt-1 text-[11px] text-slate-400">Verification ID: {cert.verificationId}</p>
-                  <button
-                    type="button"
-                    disabled
-                    className="mt-5 rounded-lg border border-brand-200 px-4 py-1.5 text-xs font-semibold text-brand-700 opacity-60"
-                    title="Demo only — no PDF is generated"
-                  >
-                    ⬇ Download PDF (demo)
-                  </button>
+                  <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
+                    <button
+                      type="button"
+                      disabled
+                      className="rounded-lg border border-brand-200 px-4 py-1.5 text-xs font-semibold text-brand-700 opacity-60"
+                      title="Demo only — no PDF is generated"
+                    >
+                      ⬇ Download PDF (demo)
+                    </button>
+                    <Link
+                      href="/certificates/verify"
+                      className="text-xs font-semibold text-brand-600 hover:underline"
+                    >
+                      Verify this certificate publicly →
+                    </Link>
+                  </div>
                 </div>
               );
             })

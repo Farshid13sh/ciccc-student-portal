@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { Program } from "@/lib/types";
 import CourseCard from "./CourseCard";
 
@@ -15,17 +15,49 @@ export default function CourseCatalog({
 }) {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<string>("All");
+  // Seeded with the server-rendered list so the page has real content on
+  // first paint (and still works with JS disabled); every search/filter
+  // change after that goes over the network to GET /api/programs.
+  const [results, setResults] = useState<Program[]>(programs);
+  const [loading, setLoading] = useState(false);
+  const isFirstRun = useRef(true);
 
   const categories = useMemo(() => ["All", ...Array.from(new Set(programs.map((p) => p.category)))], [programs]);
   const enrolledSet = useMemo(() => new Set(enrolledIds), [enrolledIds]);
 
-  const filtered = programs.filter((p) => {
-    const matchesCategory = category === "All" || p.category === category;
-    const q = query.trim().toLowerCase();
-    const matchesQuery =
-      !q || p.title.toLowerCase().includes(q) || p.code.toLowerCase().includes(q) || p.description.toLowerCase().includes(q);
-    return matchesCategory && matchesQuery;
-  });
+  useEffect(() => {
+    // Skip the redundant fetch on mount — the server already sent this data.
+    if (isFirstRun.current) {
+      isFirstRun.current = false;
+      return;
+    }
+
+    const controller = new AbortController();
+    const timer = setTimeout(async () => {
+      setLoading(true);
+      try {
+        const params = new URLSearchParams();
+        if (query.trim()) params.set("q", query.trim());
+        if (category !== "All") params.set("category", category);
+
+        const res = await fetch(`/api/programs?${params.toString()}`, { signal: controller.signal });
+        if (!res.ok) throw new Error("Request failed");
+        const data: { programs: Program[] } = await res.json();
+        setResults(data.programs);
+      } catch (err) {
+        if ((err as Error).name !== "AbortError") {
+          // Network hiccup — leave the last good results on screen rather than blanking the page.
+        }
+      } finally {
+        setLoading(false);
+      }
+    }, 250); // debounce so we're not firing a request per keystroke
+
+    return () => {
+      controller.abort();
+      clearTimeout(timer);
+    };
+  }, [query, category]);
 
   return (
     <div>
@@ -44,7 +76,7 @@ export default function CourseCatalog({
           />
         </label>
         <p className="text-sm text-slate-500">
-          {filtered.length} program{filtered.length === 1 ? "" : "s"}
+          {loading ? "Searching…" : `${results.length} program${results.length === 1 ? "" : "s"}`}
         </p>
       </div>
 
@@ -64,11 +96,11 @@ export default function CourseCatalog({
         ))}
       </div>
 
-      {filtered.length === 0 ? (
+      {results.length === 0 && !loading ? (
         <p className="mt-8 text-sm text-slate-500">No programs match your search.</p>
       ) : (
-        <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-          {filtered.map((p) => (
+        <div className={`mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-3 transition-opacity ${loading ? "opacity-50" : ""}`}>
+          {results.map((p) => (
             <CourseCard
               key={p.id}
               program={p}
